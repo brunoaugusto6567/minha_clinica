@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>Histórico de Consultas</h1>
+
+<table>
+
+    <tr>
+        <th>Especialidade</th>
+        <th>Tipo</th>
+        <th>Data</th>
+        <th>Status</th>
+        <th>Retorno</th>
+    </tr>
+
+    {% for consulta in consultas %}
+
+    <tr>
+
+        <td>{{ consulta.especialidade }}</td>
+
+        <td>{{ consulta.tipo_consulta }}</td>
+
+        <td>{{ consulta.data }}</td>
+
+        <td>{{ consulta.status }}</td>
+
+        <td>
+            <a href="/retorno/{{ consulta.id }}">
+                Solicitar Retorno
+            </a>
+        </td>
+
+    </tr>
+
+    {% endfor %}
+
+</table>
+
+{% endblock %}

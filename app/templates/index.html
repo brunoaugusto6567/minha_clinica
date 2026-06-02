@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<section class="hero">
+    <div class="hero-content">
+        <h1>Agende sua consulta com facilidade</h1>
+
+        <p>
+            Consultas presenciais e teleconsultas de forma rápida,
+            segura e moderna.
+        </p>
+
+        <a href="/marcar-consulta" class="btn-principal">
+            Marcar Consulta
+        </a>
+    </div>
+</section>
+
+<section class="especialidades">
+
+    <h2>Especialidades Disponíveis</h2>
+
+    <div class="cards">
+
+        {% for especialidade in especialidades %}
+        <div class="card">
+            <h3>{{ especialidade }}</h3>
+        </div>
+        {% endfor %}
+
+    </div>
+
+</section>
+
+{% endblock %}

@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>Agendar Consulta</h1>
+
+<form method="POST">
+
+    <label>Especialidade</label>
+
+    <select name="especialidade">
+
+        {% for especialidade in especialidades %}
+
+        <option value="{{ especialidade }}">
+            {{ especialidade }}
+        </option>
+
+        {% endfor %}
+
+    </select>
+
+    <label>Tipo de Consulta</label>
+
+    <select name="tipo_consulta">
+
+        <option value="Presencial">
+            Presencial
+        </option>
+
+        <option value="Teleconsulta">
+            Teleconsulta
+        </option>
+
+    </select>
+
+    <label>Data</label>
+
+    <input type="date" name="data" required>
+
+    <label>Horário</label>
+
+    <input type="time" name="horario" required>
+
+    <button type="submit">
+        Confirmar Consulta
+    </button>
+
+</form>
+
+{% endblock %}

@@ -1,14 +1,51 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
-def dashboard():
-    consultas = Consulta.query.filter_by(paciente_id=current_user.id).all()
+from flask_login import login_required, current_user
 
-    return render_template('dashboard.html', consultas=consultas)
+from app import db
+from app.models.consulta import Consulta
+
+consulta = Blueprint('consulta', __name__)
+
+ESPECIALIDADES = [
+    'Pediatria',
+    'Ginecologia',
+    'Odontologia',
+    'Cardiologia',
+    'Dermatologia',
+    'Ortopedia',
+    'Neurologia',
+    'Oftalmologia'
+]
+
+
+@consulta.route('/')
+def home():
+    return render_template(
+        'index.html',
+        especialidades=ESPECIALIDADES
+    )
+
+
+@consulta.route('/dashboard')
+@login_required
+def dashboard():
+
+    consultas = Consulta.query.filter_by(
+        paciente_id=current_user.id
+    ).all()
+
+    return render_template(
+        'dashboard.html',
+        consultas=consultas
+    )
 
 
 @consulta.route('/marcar-consulta', methods=['GET', 'POST'])
 @login_required
 def marcar_consulta():
+
     if request.method == 'POST':
+
         especialidade = request.form['especialidade']
         tipo_consulta = request.form['tipo_consulta']
         data = request.form['data']
@@ -33,7 +70,9 @@ def marcar_consulta():
 
         flash('Consulta marcada com sucesso!')
 
-        return redirect(url_for('consulta.dashboard'))
+        return redirect(
+            url_for('consulta.dashboard')
+        )
 
     return render_template(
         'marcar_consulta.html',
@@ -44,14 +83,21 @@ def marcar_consulta():
 @consulta.route('/historico')
 @login_required
 def historico():
-    consultas = Consulta.query.filter_by(paciente_id=current_user.id).all()
 
-    return render_template('historico.html', consultas=consultas)
+    consultas = Consulta.query.filter_by(
+        paciente_id=current_user.id
+    ).all()
+
+    return render_template(
+        'historico.html',
+        consultas=consultas
+    )
 
 
 @consulta.route('/retorno/<int:id>')
 @login_required
 def retorno(id):
+
     consulta_antiga = Consulta.query.get_or_404(id)
 
     nova_consulta = Consulta(
@@ -68,4 +114,18 @@ def retorno(id):
 
     flash('Consulta de retorno solicitada!')
 
-    return redirect(url_for('consulta.dashboard'))
+    return redirect(
+        url_for('consulta.dashboard')
+    )
+
+
+@consulta.route('/teleconsulta/<int:id>')
+@login_required
+def teleconsulta(id):
+
+    consulta_obj = Consulta.query.get_or_404(id)
+
+    return render_template(
+        'teleconsulta.html',
+        consulta=consulta_obj
+    )

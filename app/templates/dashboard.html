@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>Painel do Paciente</h1>
+
+<div class="dashboard-cards">
+
+    <div class="card">
+        <h3>Nova Consulta</h3>
+
+        <a href="/marcar-consulta">
+            <button>Agendar</button>
+        </a>
+    </div>
+
+    <div class="card">
+        <h3>Histórico</h3>
+
+        <a href="/historico">
+            <button>Visualizar</button>
+        </a>
+    </div>
+
+    <div class="card">
+        <h3>Atestado</h3>
+
+        <a href="/atestado">
+            <button>Baixar PDF</button>
+        </a>
+    </div>
+
+</div>
+
+<h2>Minhas Consultas</h2>
+
+<table>
+
+    <tr>
+        <th>Especialidade</th>
+        <th>Tipo</th>
+        <th>Data</th>
+        <th>Status</th>
+    </tr>
+
+    {% for consulta in consultas %}
+
+    <tr>
+        <td>{{ consulta.especialidade }}</td>
+        <td>{{ consulta.tipo_consulta }}</td>
+        <td>{{ consulta.data }}</td>
+        <td>{{ consulta.status }}</td>
+    </tr>
+
+    {% endfor %}
+
+</table>
+
+{% endblock %}

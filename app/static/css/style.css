@@ -1,0 +1,121 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:Arial, Helvetica, sans-serif;
+    background:#f5f7fb;
+}
+
+/* HERO */
+
+.hero{
+    height:500px;
+
+    background:
+    linear-gradient(
+        rgba(0,90,180,.7),
+        rgba(0,90,180,.7)
+    ),
+    url("https://images.unsplash.com/photo-1576091160399-112ba8d25d1f");
+
+    background-size:cover;
+    background-position:center;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    text-align:center;
+    color:white;
+}
+
+.hero-content h1{
+    font-size:55px;
+    margin-bottom:20px;
+}
+
+.hero-content p{
+    font-size:22px;
+    margin-bottom:30px;
+}
+
+.btn-principal{
+    background:#ffffff;
+    color:#0066cc;
+
+    padding:15px 35px;
+
+    border-radius:10px;
+
+    text-decoration:none;
+    font-weight:bold;
+}
+
+/* ESPECIALIDADES */
+
+.especialidades{
+    width:90%;
+    margin:auto;
+    padding:60px 0;
+}
+
+.especialidades h2{
+    text-align:center;
+    margin-bottom:40px;
+    color:#0057b8;
+}
+
+.cards{
+    display:grid;
+
+    grid-template-columns:
+    repeat(auto-fit,minmax(220px,1fr));
+
+    gap:20px;
+}
+
+.card{
+    background:white;
+
+    padding:30px;
+
+    border-radius:15px;
+
+    box-shadow:
+    0 5px 15px rgba(0,0,0,.1);
+
+    transition:.3s;
+}
+
+.card:hover{
+    transform:translateY(-5px);
+}
+
+.card h3{
+    text-align:center;
+    color:#0057b8;
+}
+
+.navbar{
+    background:#0057b8;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:20px 50px;
+
+    color:white;
+}
+
+.navbar a{
+    color:white;
+    text-decoration:none;
+    margin-left:20px;
+    font-weight:bold;
+}
