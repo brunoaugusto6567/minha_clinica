@@ -26,11 +26,24 @@
 
         <td>{{ consulta.status }}</td>
 
-        <td>
-            <a href="/retorno/{{ consulta.id }}">
-                Solicitar Retorno
-            </a>
-        </td>
+       <td>
+
+    {% if consulta.status == 'Agendada' %}
+
+        <a class="btn-dashboard"
+           href="/retorno/{{ consulta.id }}">
+            Solicitar Retorno
+        </a>
+
+    {% else %}
+
+        <span class="status-cancelado">
+            Não disponível
+        </span>
+
+    {% endif %}
+
+</td>
 
     </tr>
 

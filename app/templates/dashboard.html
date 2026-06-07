@@ -2,58 +2,159 @@
 
 {% block content %}
 
-<h1>Painel do Paciente</h1>
+<h1 class="dashboard-title">
+    👋 Bem-vindo ao Painel do Paciente
+</h1>
+
+<div class="stats">
+
+    <div class="stat-card">
+        <h3>Total de Consultas</h3>
+        <p>{{ consultas|length }}</p>
+    </div>
+
+    <div class="stat-card">
+        <h3>Consultas Agendadas</h3>
+        <p>{{ consultas|selectattr('status', 'equalto', 'Agendada')|list|length }}</p>
+    </div>
+
+    <div class="stat-card">
+        <h3>Sistema</h3>
+        <p>🟢 Online</p>
+    </div>
+
+</div>
 
 <div class="dashboard-cards">
 
     <div class="card">
-        <h3>Nova Consulta</h3>
+        <h3>📅 Nova Consulta</h3>
+        <p>Agende uma nova consulta médica.</p>
 
-        <a href="/marcar-consulta">
-            <button>Agendar</button>
+        <a href="/marcar-consulta" class="btn-dashboard">
+            Agendar Consulta
         </a>
     </div>
 
     <div class="card">
-        <h3>Histórico</h3>
+        <h3>📋 Histórico</h3>
+        <p>Veja todas as suas consultas.</p>
 
-        <a href="/historico">
-            <button>Visualizar</button>
+        <a href="/historico" class="btn-dashboard">
+            Ver Histórico
         </a>
     </div>
 
     <div class="card">
-        <h3>Atestado</h3>
+        <h3>📄 Atestados</h3>
+        <p>Baixe seus documentos médicos.</p>
 
-        <a href="/atestado">
-            <button>Baixar PDF</button>
+        <a href="/historico" class="btn-dashboard">
+            Ir para Histórico
         </a>
     </div>
 
 </div>
 
-<h2>Minhas Consultas</h2>
+<h2 class="titulo-consultas">
+    Minhas Consultas
+</h2>
 
-<table>
-
-    <tr>
-        <th>Especialidade</th>
-        <th>Tipo</th>
-        <th>Data</th>
-        <th>Status</th>
-    </tr>
+{% if consultas %}
 
     {% for consulta in consultas %}
 
-    <tr>
-        <td>{{ consulta.especialidade }}</td>
-        <td>{{ consulta.tipo_consulta }}</td>
-        <td>{{ consulta.data }}</td>
-        <td>{{ consulta.status }}</td>
-    </tr>
+    <div class="consulta-card">
+
+        <div class="consulta-header">
+
+            <h3>
+                🩺 {{ consulta.especialidade }}
+            </h3>
+
+            {% if consulta.status == 'Cancelada' %}
+                <span class="status-cancelada">
+                    Cancelada
+                </span>
+            {% elif consulta.status == 'Concluída' %}
+                <span class="status-agendada" style="background: #e0f2fe; color: #0369a1;">
+                    Concluída
+                </span>
+            {% else %}
+                <span class="status-agendada">
+                    {{ consulta.status }}
+                </span>
+            {% endif %}
+
+        </div>
+
+        <div class="consulta-info">
+
+            <p>
+                <strong>Tipo:</strong>
+                {{ consulta.tipo_consulta }}
+            </p>
+
+            <p>
+                <strong>Data:</strong>
+                {{ consulta.data }}
+            </p>
+
+            <p>
+                <strong>Horário:</strong>
+                {{ consulta.horario }}
+            </p>
+
+        </div>
+
+        <div class="acoes-consulta">
+
+            {% if consulta.link_teleconsulta and consulta.status == 'Agendada' %}
+
+            <a href="{{ consulta.link_teleconsulta }}" target="_blank" class="btn-dashboard">
+                🎥 Teleconsulta
+            </a>
+
+            {% endif %}
+
+            {% if consulta.status == 'Concluída' %}
+
+            <a href="/atestado/{{ consulta.id }}" class="btn-dashboard" style="background: #10b981;">
+                📄 Baixar Atestado
+            </a>
+
+            {% endif %}
+
+            {% if consulta.status == 'Agendada' or consulta.status == 'Pendente' %}
+
+            <a href="/cancelar-consulta/{{ consulta.id }}" class="btn-cancelar" onclick="return confirm('Deseja cancelar esta consulta?')">
+                ❌ Cancelar
+            </a>
+
+            {% endif %}
+
+        </div>
+
+    </div>
 
     {% endfor %}
 
-</table>
+{% else %}
+
+<div class="consulta-card">
+
+    <h3>📭 Nenhuma consulta encontrada</h3>
+
+    <p>
+        Você ainda não possui consultas agendadas.
+    </p>
+
+    <a href="/marcar-consulta" class="btn-dashboard">
+        Agendar Primeira Consulta
+    </a>
+
+</div>
+
+{% endif %}
 
 {% endblock %}

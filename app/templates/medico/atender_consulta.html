@@ -1,0 +1,157 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="form-container">
+
+<h1>👨‍⚕️ Atendimento Médico</h1>
+
+<form method="POST">
+
+<div class="form-group">
+
+<label>Paciente</label>
+
+<input
+type="text"
+value="{{ consulta.nome_completo }}"
+disabled>
+
+</div>
+
+<div class="form-group">
+
+<label>Queixa Principal</label>
+
+<textarea
+name="descricao_paciente"
+rows="4"
+required>{{ consulta.descricao_paciente or '' }}</textarea>
+
+</div>
+
+<div class="form-group">
+
+<label>Diagnóstico</label>
+
+<textarea
+name="diagnostico"
+rows="4">{{ consulta.diagnostico or '' }}</textarea>
+
+</div>
+
+<div class="form-group">
+
+<label>Medicamentos Prescritos</label>
+
+<textarea
+name="medicamentos"
+rows="4">{{ consulta.medicamentos or '' }}</textarea>
+
+</div>
+
+<div class="form-group">
+
+<label>Exames Solicitados</label>
+
+<select name="exames">
+
+<option value="">Nenhum</option>
+
+<option {% if consulta.exames_solicitados=="Raio-X" %}selected{% endif %}>Raio-X</option>
+
+<option {% if consulta.exames_solicitados=="Hemograma" %}selected{% endif %}>Hemograma</option>
+
+<option {% if consulta.exames_solicitados=="Ultrassom" %}selected{% endif %}>Ultrassom</option>
+
+<option {% if consulta.exames_solicitados=="Tomografia" %}selected{% endif %}>Tomografia</option>
+
+<option {% if consulta.exames_solicitados=="Ressonância" %}selected{% endif %}>Ressonância</option>
+
+<option {% if consulta.exames_solicitados=="Eletrocardiograma" %}selected{% endif %}>Eletrocardiograma</option>
+
+</select>
+
+</div>
+
+<div class="form-group">
+
+<label>Observações Médicas</label>
+
+<textarea
+name="observacoes"
+rows="4">{{ consulta.observacoes_medico or '' }}</textarea>
+
+</div>
+
+<hr>
+
+<h3>📄 Atestado Médico</h3>
+
+<div class="form-group">
+
+<label>Emitir atestado?</label>
+
+<select name="atestado">
+
+<option value="nao">
+Não
+</option>
+
+<option value="sim">
+Sim
+</option>
+
+</select>
+
+</div>
+
+<div class="form-group">
+
+<label>Dias de afastamento</label>
+
+<input
+type="number"
+name="dias"
+min="1"
+max="30">
+
+</div>
+
+<hr>
+
+<div class="form-group">
+
+<label>Status da Consulta</label>
+
+<select name="status">
+
+<option value="Agendada">
+Agendada
+</option>
+
+<option value="Concluída">
+Concluída
+</option>
+
+<option value="Cancelada">
+Cancelada
+</option>
+
+</select>
+
+</div>
+
+<button
+type="submit"
+class="btn-submit">
+
+💾 Salvar Consulta
+
+</button>
+
+</form>
+
+</div>
+
+{% endblock %}

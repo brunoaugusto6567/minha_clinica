@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1 class="dashboard-title">
+👨‍⚕️ Painel do Médico
+</h1>
+
+<div class="stats">
+
+    <div class="stat-card">
+
+        <h3>Consultas Pendentes</h3>
+
+        <p>{{ consultas|length }}</p>
+
+    </div>
+
+</div>
+
+<h2 class="titulo-consultas">
+Consultas Agendadas
+</h2>
+
+{% if consultas %}
+
+    {% for consulta in consultas %}
+
+    <div class="consulta-card">
+
+        <div class="consulta-header">
+
+            <h3>
+                🧑 {{ consulta.nome_completo }}
+            </h3>
+
+            <span class="status-agendada">
+                {{ consulta.status }}
+            </span>
+
+        </div>
+
+        <div class="consulta-info">
+
+            <p>
+                <strong>Especialidade:</strong>
+                {{ consulta.especialidade }}
+            </p>
+
+            <p>
+                <strong>Tipo:</strong>
+                {{ consulta.tipo_consulta }}
+            </p>
+
+            <p>
+                <strong>Data:</strong>
+                {{ consulta.data }}
+            </p>
+
+            <p>
+                <strong>Horário:</strong>
+                {{ consulta.horario }}
+            </p>
+
+        </div>
+
+        {% if consulta.status == "Agendada" %}
+
+        <a
+            href="/medico/consulta/{{ consulta.id }}"
+            class="btn-dashboard">
+
+            Abrir Consulta
+
+        </a>
+
+        {% endif %}
+
+    </div>
+
+    {% endfor %}
+
+{% else %}
+
+    <div class="consulta-card">
+
+        <h3>
+            Nenhuma consulta pendente.
+        </h3>
+
+    </div>
+
+{% endif %}
+
+{% endblock %}

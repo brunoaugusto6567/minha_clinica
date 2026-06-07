@@ -2,32 +2,125 @@
 
 {% block content %}
 
-<section class="hero">
-    <div class="hero-content">
-        <h1>Agende sua consulta com facilidade</h1>
+<section class="hero text-center">
 
-        <p>
-            Consultas presenciais e teleconsultas de forma rápida,
-            segura e moderna.
-        </p>
+    <h1>Clínica Médica Digital</h1>
 
-        <a href="/marcar-consulta" class="btn-principal">
-            Marcar Consulta
-        </a>
-    </div>
+    <p>
+        Consultas presenciais, teleconsultas e atestados digitais.
+    </p>
+
+    <a href="/marcar-consulta" class="btn btn-light btn-lg">
+        Agendar Consulta
+    </a>
+
 </section>
 
-<section class="especialidades">
+<section class="mt-5">
 
-    <h2>Especialidades Disponíveis</h2>
+    <div class="row">
 
-    <div class="cards">
+        <div class="col-md-3">
+            <div class="card shadow text-center p-4">
+                <h3>👨‍⚕️</h3>
+                <h4>50+</h4>
+                <p>Médicos</p>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow text-center p-4">
+                <h3>😊</h3>
+                <h4>1000+</h4>
+                <p>Pacientes</p>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow text-center p-4">
+                <h3>🏥</h3>
+                <h4>8</h4>
+                <p>Especialidades</p>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow text-center p-4">
+                <h3>⭐</h3>
+                <h4>4.9</h4>
+                <p>Avaliação</p>
+            </div>
+        </div>
+
+    </div>
+
+</section>
+
+<section class="mt-5">
+
+    <h2 class="text-center mb-4">
+        Especialidades Médicas
+    </h2>
+
+    <div class="row">
 
         {% for especialidade in especialidades %}
-        <div class="card">
-            <h3>{{ especialidade }}</h3>
+
+        <div class="col-md-3 mb-4">
+
+            <div class="card especialidade-card shadow">
+
+                <div class="card-body text-center">
+
+                    <h5>{{ especialidade }}</h5>
+
+                </div>
+
+            </div>
+
         </div>
+
         {% endfor %}
+
+    </div>
+
+</section>
+
+<section class="mt-5">
+
+    <h2 class="text-center mb-4">
+        Serviços Disponíveis
+    </h2>
+
+    <div class="row">
+
+        <div class="col-md-3">
+            <div class="card shadow p-4">
+                <h4>💻 Teleconsulta</h4>
+                <p>Consultas online.</p>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow p-4">
+                <h4>📄 Atestado PDF</h4>
+                <p>Download imediato.</p>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow p-4">
+                <h4>🔄 Retorno</h4>
+                <p>Solicite nova consulta.</p>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow p-4">
+                <h4>📋 Histórico</h4>
+                <p>Veja consultas anteriores.</p>
+            </div>
+        </div>
 
     </div>
 
