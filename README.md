@@ -1,8 +1,8 @@
-#  Clínica Médica Digital
+# Clínica Médica Digital
 
 Sistema web para gerenciamento de consultas médicas desenvolvido em Python utilizando Flask.
 
-##  Autores
+## Autores
 
 * Bruno Augusto
 * Eduardo Evaristo
@@ -17,6 +17,7 @@ Sistema web para gerenciamento de consultas médicas desenvolvido em Python util
 * SQLAlchemy
 * Flask-Login
 * ReportLab
+* Cryptography (Fernet)
 * HTML
 * CSS
 
@@ -51,6 +52,18 @@ python -m venv .clinica
 
 ```bash
 pip install -r requirements.txt
+```
+
+Caso ocorra o erro:
+
+```bash
+ModuleNotFoundError: No module named 'cryptography'
+```
+
+execute:
+
+```bash
+pip install cryptography
 ```
 
 ## Executar
@@ -156,6 +169,12 @@ Senha:
 * Solicitação de exames
 * Emissão de atestados
 * Finalização de consultas
+
+---
+
+# Segurança
+
+O sistema utiliza a biblioteca Cryptography (Fernet) para criptografar informações sensíveis dos pacientes antes do armazenamento no banco de dados, garantindo maior proteção dos dados.
 
 ---
 
