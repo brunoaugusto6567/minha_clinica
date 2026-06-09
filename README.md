@@ -1,183 +1,238 @@
-# Clínica Médica Digital
+#  Clínica Médica Digital
 
-Sistema web para gerenciamento de consultas médicas desenvolvido em Python utilizando Flask.
+Sistema web para gerenciamento de consultas médicas desenvolvido em **Python** utilizando **Flask**.
 
-## Autores
+##  Autores
 
-* Bruno Augusto
-* Eduardo Evaristo
-
----
-
-# Tecnologias
-
-* Python
-* Flask
-* SQLite
-* SQLAlchemy
-* Flask-Login
-* ReportLab
-* Cryptography (Fernet)
-* HTML
-* CSS
+- Bruno Augusto
+- Eduardo Evaristo
 
 ---
 
-# Como Executar
+#  Tecnologias
 
-## Clonar o projeto
+- Python 3
+- Flask
+- SQLite
+- SQLAlchemy
+- Flask-Login
+- Flask-Migrate
+- Flask-WTF
+- ReportLab
+- Cryptography
+- HTML5
+- CSS3
+
+---
+
+#  Como baixar o projeto
+
+## 1. Clonar o repositório
 
 ```bash
 git clone https://github.com/brunoaugusto6567/minha_clinica.git
+```
+
+## 2. Entrar na pasta do projeto
+
+```bash
 cd minha_clinica
 ```
 
-## Criar ambiente virtual
+---
 
-Linux:
+# 🖥️ Criar o ambiente virtual
+
+### Linux
 
 ```bash
 python3 -m venv .clinica
 source .clinica/bin/activate
 ```
 
-Windows:
+### Windows
 
-```bash
+```powershell
 python -m venv .clinica
 .clinica\Scripts\activate
 ```
 
-## Instalar dependências
+---
+
+#  Instalar as dependências
+
+Após ativar o ambiente virtual execute:
 
 ```bash
 pip install -r requirements.txt
 ```
 
-Caso ocorra o erro:
+Caso utilize Linux e o arquivo `requirements.txt` não esteja presente, execute:
 
 ```bash
-ModuleNotFoundError: No module named 'cryptography'
+pip install Flask Flask-SQLAlchemy Flask-Login Flask-WTF Flask-Migrate Flask-Mail Flask-Bootstrap email-validator python-dotenv reportlab cryptography pillow
 ```
 
-execute:
+---
+
+#  Executar o projeto
+
+Criar o banco de dados:
 
 ```bash
-pip install cryptography
+python criar_banco.py
 ```
 
-## Executar
+Executar o sistema:
 
 ```bash
 python run.py
 ```
 
-O sistema ficará disponível em:
+A aplicação ficará disponível em:
 
+```
 http://127.0.0.1:5000
+```
 
 ---
 
-# Cadastro do Paciente
+#  Cadastro do Paciente
 
 Endereço:
 
+```
 http://127.0.0.1:5000/cadastro
+```
 
-Usuário de demonstração:
+Usuário de demonstração
 
-Nome:
+Nome
+
+```
 Lucas Martins Oliveira
+```
 
-Email:
-[lucas.martins2026@gmail.com](mailto:lucas.martins2026@gmail.com)
+Email
 
-Senha:
+```
+lucas.martins2026@gmail.com
+```
+
+Senha
+
+```
 Saude@2026
+```
 
 ---
 
-# Login do Paciente
+#  Login do Paciente
 
-Endereço:
+Endereço
 
+```
 http://127.0.0.1:5000/login
+```
 
-Email:
-[lucas.martins2026@gmail.com](mailto:lucas.martins2026@gmail.com)
+Email
 
-Senha:
+```
+lucas.martins2026@gmail.com
+```
+
+Senha
+
+```
 Saude@2026
+```
 
 ---
 
-# Cadastro do Médico
+#  Cadastro do Médico
 
-Endereço:
+Endereço
 
+```
 http://127.0.0.1:5000/medico/cadastro
+```
 
-Exemplo:
+Exemplo
 
-Nome:
+Nome
+
+```
 Dr. João Silva
+```
 
-Especialidade:
+Especialidade
+
+```
 Cardiologia
+```
 
-Email:
-[medico@clinica.com](mailto:medico@clinica.com)
+Email
 
-Senha:
+```
+medico@clinica.com
+```
+
+Senha
+
+```
 123456
+```
 
 ---
 
-# Login do Médico
+#  Login do Médico
 
-Endereço:
+Endereço
 
+```
 http://127.0.0.1:5000/medico/login
+```
 
-Email:
-[medico@clinica.com](mailto:medico@clinica.com)
+Email
 
-Senha:
+```
+medico@clinica.com
+```
+
+Senha
+
+```
 123456
+```
 
 ---
 
-# Funcionalidades
+#  Funcionalidades
 
 ## Paciente
 
-* Cadastro
-* Login
-* Marcação de consultas
-* Cancelamento de consultas
-* Histórico médico
-* Solicitação de retorno
-* Download de atestados
+- Cadastro
+- Login
+- Agendamento de consultas
+- Cancelamento de consultas
+- Histórico de consultas
+- Solicitação de consulta de retorno
+- Download do atestado em PDF
 
 ## Médico
 
-* Login
-* Dashboard
-* Atendimento médico
-* Diagnóstico
-* Prescrição de medicamentos
-* Solicitação de exames
-* Emissão de atestados
-* Finalização de consultas
+- Cadastro
+- Login
+- Dashboard
+- Atendimento das consultas
+- Registro do diagnóstico
+- Prescrição de medicamentos
+- Solicitação de exames
+- Emissão de atestado médico
+- Finalização da consulta
 
 ---
 
-# Segurança
+#  Licença
 
-O sistema utiliza a biblioteca Cryptography (Fernet) para criptografar informações sensíveis dos pacientes antes do armazenamento no banco de dados, garantindo maior proteção dos dados.
-
----
-
-# Licença
-
-Projeto acadêmico desenvolvido para fins educacionais.
+Projeto desenvolvido para fins acadêmicos na disciplina de Programação Orientada a Objetos.
