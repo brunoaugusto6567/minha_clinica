@@ -3,7 +3,7 @@ from datetime import datetime
 
 
 class Consulta(db.Model):
-    __tablename__ = 'consultas'
+    __tablename__ = "consultas"
 
     id = db.Column(db.Integer, primary_key=True)
 
@@ -67,12 +67,26 @@ class Consulta(db.Model):
 
     status = db.Column(
         db.String(50),
-        default='Agendada'
+        default="Agendada"
     )
 
     retorno = db.Column(
         db.Boolean,
         default=False
+    )
+
+    # NOVOS CAMPOS PARA RETORNO
+
+    motivo_retorno = db.Column(
+        db.Text
+    )
+
+    data_solicitada = db.Column(
+        db.String(20)
+    )
+
+    horario_solicitado = db.Column(
+        db.String(10)
     )
 
     link_teleconsulta = db.Column(
@@ -118,12 +132,12 @@ class Consulta(db.Model):
 
     medico_id = db.Column(
         db.Integer,
-        db.ForeignKey('medicos.id')
+        db.ForeignKey("medicos.id")
     )
 
     paciente_id = db.Column(
         db.Integer,
-        db.ForeignKey('usuarios.id')
+        db.ForeignKey("usuarios.id")
     )
 
     # ==========================

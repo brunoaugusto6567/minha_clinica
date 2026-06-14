@@ -75,13 +75,13 @@ def marcar_consulta():
 
         try:
             nascimento = datetime.strptime(data_nascimento, '%Y-%m-%d')
-            idade = (datetime.now().date() - nascimento.date()).days // 365
+            ididade = (datetime.now().date() - nascimento.date()).days // 365
 
-            if idade < 0:
+            if ididade < 0:
                 flash('Data de nascimento inválida.')
                 return redirect(url_for('consulta.marcar_consulta'))
 
-            if idade > 120:
+            if ididade > 120:
                 flash('Idade superior ao limite permitido.')
                 return redirect(url_for('consulta.marcar_consulta'))
         except ValueError:
@@ -152,62 +152,80 @@ def historico():
     )
 
 
-@consulta.route('/retorno/<int:id>')
+# =======================================================
+# NOVA LOGICA DE RETORNO (DATA E HORA DO FORMULÁRIO)
+# =======================================================
+@consulta.route('/retorno/<int:id>', methods=['GET', 'POST'])
 @login_required
 def retorno(id):
+
     consulta_antiga = db.get_or_404(Consulta, id)
 
     if consulta_antiga.paciente_id != current_user.id:
-        flash('Acesso negado!')
-        return redirect(url_for('consulta.dashboard'))
+        flash("Acesso negado.")
+        return redirect(url_for("consulta.dashboard"))
 
-    if consulta_antiga.status == 'Cancelada':
-        flash('Não é possível solicitar retorno de uma consulta cancelada.')
-        return redirect(url_for('consulta.historico'))
-    
-    if consulta_antiga.status != 'Concluída':
-        flash('O retorno só pode ser solicitado após uma consulta concluída.')
-        return redirect(url_for('consulta.historico'))
+    if consulta_antiga.status != "Concluída":
+        flash("O retorno só pode ser solicitado após uma consulta concluída.")
+        return redirect(url_for("consulta.historico"))
 
-    nova_consulta = Consulta(
-        nome_completo=consulta_antiga.nome_completo,
-        cpf=consulta_antiga.cpf,
-        data_nascimento=consulta_antiga.data_nascimento,
-        sexo=consulta_antiga.sexo,
-        telefone=consulta_antiga.telefone,
-        email=consulta_antiga.email,
-        endereco=consulta_antiga.endereco,
-        especialidade=consulta_antiga.especialidade,
-        tipo_consulta=consulta_antiga.tipo_consulta,
-        data=None,
-        horario=None,
-        status='Pendente',
+    # Não permite dois retornos da mesma consulta
+    retorno_existente = Consulta.query.filter_by(
+        paciente_id=current_user.id,
         retorno=True,
-        paciente_id=current_user.id
-    )
+        status="Pendente"
+    ).filter(
+        Consulta.especialidade == consulta_antiga.especialidade
+    ).first()
 
-    db.session.add(nova_consulta)
-    db.session.commit()
+    if retorno_existente:
+        flash("Você já possui um retorno aguardando aprovação.")
+        return redirect(url_for("consulta.historico"))
 
-    flash('Consulta de retorno solicitada!')
-    return redirect(url_for('consulta.dashboard'))
+    if request.method == "POST":
 
+        data = request.form["data"]
+        horario = request.form["horario"]
 
-@consulta.route('/teleconsulta/<int:id>')
-@login_required
-def teleconsulta(id):
-    consulta_obj = db.get_or_404(Consulta, id)
+        # Verifica se já existe consulta nesse horário
+        conflito = Consulta.query.filter_by(
+            data=data,
+            horario=horario,
+            status="Agendada"
+        ).first()
 
-    if consulta_obj.paciente_id != current_user.id:
-        flash('Acesso negado!')
-        return redirect(url_for('consulta.dashboard'))
+        if conflito:
+            flash("Já existe uma consulta marcada nesse horário.")
+            return redirect(url_for("consulta.retorno", id=id))
+
+        novo_retorno = Consulta(
+            nome_completo=consulta_antiga.nome_completo,
+            cpf=consulta_antiga.cpf,
+            data_nascimento=consulta_antiga.data_nascimento,
+            sexo=consulta_antiga.sexo,
+            telefone=consulta_antiga.telefone,
+            email=consulta_antiga.email,
+            endereco=consulta_antiga.endereco,
+            especialidade=consulta_antiga.especialidade,
+            tipo_consulta=consulta_antiga.tipo_consulta,
+            data=data,
+            horario=horario,
+            paciente_id=current_user.id,
+            retorno=True,
+            status="Pendente"
+        )
+
+        db.session.add(novo_retorno)
+        db.session.commit()
+
+        flash("Solicitação de retorno enviada ao médico.")
+        return redirect(url_for("consulta.historico"))
 
     return render_template(
-        'teleconsulta.html',
-        consulta=consulta_obj
-    )
-
-
+    "agendar_retorno.html",
+    consulta=consulta_antiga,
+    today=datetime.now().strftime("%Y-%m-%d")
+)
 @consulta.route('/cancelar-consulta/<int:id>')
 @login_required
 def cancelar_consulta(id):
@@ -307,7 +325,6 @@ def baixar_atestado(id):
         f"Emitido em: {datetime.now().strftime('%d/%m/%Y')}"
     )
 
-    # CORREÇÃO: Alinhamento das linhas abaixo com 4 espaços para dentro da função
     assinatura = os.path.join(
         "app",
         "static",

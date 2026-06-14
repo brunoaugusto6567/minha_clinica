@@ -3,23 +3,25 @@
 {% block content %}
 
 <h1 class="dashboard-title">
-👨‍⚕️ Painel do Médico
+    👨‍⚕️ Painel do Médico
 </h1>
 
 <div class="stats">
 
     <div class="stat-card">
-
-        <h3>Consultas Pendentes</h3>
-
+        <h3>Consultas Agendadas</h3>
         <p>{{ consultas|length }}</p>
+    </div>
 
+    <div class="stat-card">
+        <h3>Retornos Pendentes</h3>
+        <p>{{ retornos|length }}</p>
     </div>
 
 </div>
 
 <h2 class="titulo-consultas">
-Consultas Agendadas
+    Consultas Agendadas
 </h2>
 
 {% if consultas %}
@@ -32,6 +34,18 @@ Consultas Agendadas
 
             <h3>
                 🧑 {{ consulta.nome_completo }}
+
+                {% if consulta.retorno %}
+                    <span style="
+                        background:#27ae60;
+                        color:white;
+                        padding:3px 8px;
+                        border-radius:5px;
+                        font-size:13px;
+                        margin-left:10px;">
+                        RETORNO
+                    </span>
+                {% endif %}
             </h3>
 
             <span class="status-agendada">
@@ -49,7 +63,12 @@ Consultas Agendadas
 
             <p>
                 <strong>Tipo:</strong>
-                {{ consulta.tipo_consulta }}
+
+                {% if consulta.retorno %}
+                    Consulta de Retorno
+                {% else %}
+                    {{ consulta.tipo_consulta }}
+                {% endif %}
             </p>
 
             <p>
@@ -64,17 +83,13 @@ Consultas Agendadas
 
         </div>
 
-        {% if consulta.status == "Agendada" %}
-
         <a
-            href="/medico/consulta/{{ consulta.id }}"
+            href="{{ url_for('medico.editar_consulta', id=consulta.id) }}"
             class="btn-dashboard">
 
             Abrir Consulta
 
         </a>
-
-        {% endif %}
 
     </div>
 
@@ -82,13 +97,100 @@ Consultas Agendadas
 
 {% else %}
 
+<div class="consulta-card">
+
+    Nenhuma consulta agendada.
+
+</div>
+
+{% endif %}
+
+
+<hr style="margin:40px 0;">
+
+
+<h2 class="titulo-consultas">
+    Solicitações de Retorno
+</h2>
+
+{% if retornos %}
+
+    {% for retorno in retornos %}
+
     <div class="consulta-card">
 
-        <h3>
-            Nenhuma consulta pendente.
-        </h3>
+        <div class="consulta-header">
+
+            <h3>
+                🧑 {{ retorno.nome_completo }}
+            </h3>
+
+            <span
+                class="status-pendente"
+                style="background:#f39c12;color:white;padding:4px 10px;border-radius:5px;">
+
+                {{ retorno.status }}
+
+            </span>
+
+        </div>
+
+        <div class="consulta-info">
+
+            <p>
+                <strong>Especialidade:</strong>
+                {{ retorno.especialidade }}
+            </p>
+
+            <p>
+                <strong>Tipo:</strong>
+                {{ retorno.tipo_consulta }}
+            </p>
+
+            <p>
+                <strong>Data solicitada:</strong>
+                {{ retorno.data }}
+            </p>
+
+            <p>
+                <strong>Horário solicitado:</strong>
+                {{ retorno.horario }}
+            </p>
+
+        </div>
+
+        <div style="display:flex;gap:10px;">
+
+            <a
+                href="{{ url_for('medico.aceitar_retorno', id=retorno.id) }}"
+                class="btn-dashboard">
+
+                ✔ Aceitar
+
+            </a>
+
+            <a
+                href="{{ url_for('medico.recusar_retorno', id=retorno.id) }}"
+                class="btn-dashboard"
+                style="background:#c0392b;">
+
+                ✖ Recusar
+
+            </a>
+
+        </div>
 
     </div>
+
+    {% endfor %}
+
+{% else %}
+
+<div class="consulta-card">
+
+    Nenhuma solicitação de retorno.
+
+</div>
 
 {% endif %}
 

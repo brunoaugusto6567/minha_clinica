@@ -5,50 +5,46 @@
 <h1>Histórico de Consultas</h1>
 
 <table>
-
-    <tr>
-        <th>Especialidade</th>
-        <th>Tipo</th>
-        <th>Data</th>
-        <th>Status</th>
-        <th>Retorno</th>
-    </tr>
-
-    {% for consulta in consultas %}
-
-    <tr>
-
-        <td>{{ consulta.especialidade }}</td>
-
-        <td>{{ consulta.tipo_consulta }}</td>
-
-        <td>{{ consulta.data }}</td>
-
-        <td>{{ consulta.status }}</td>
-
-       <td>
-
-    {% if consulta.status == 'Agendada' %}
-
-        <a class="btn-dashboard"
-           href="/retorno/{{ consulta.id }}">
-            Solicitar Retorno
-        </a>
-
-    {% else %}
-
-        <span class="status-cancelado">
-            Não disponível
-        </span>
-
-    {% endif %}
-
-</td>
-
-    </tr>
-
-    {% endfor %}
-
+    <thead>
+        <tr>
+            <th>Especialidade</th>
+            <th>Tipo</th>
+            <th>Data</th>
+            <th>Status</th>
+            <th>Retorno</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for consulta in consultas %}
+        <tr>
+            <td>{{ consulta.especialidade }}</td>
+            <td>{{ consulta.tipo_consulta }}</td>
+            <td>
+                {% if consulta.data %}
+                    {{ consulta.data }}
+                {% else %}
+                    --/--/----
+                {% endif %}
+            </td>
+            <td>{{ consulta.status }}</td>
+            <td>
+                {% if consulta.status == 'Concluída' and not consulta.retorno %}
+                    <a class="btn-dashboard" href="{{ url_for('consulta.retorno', id=consulta.id) }}">
+                        Solicitar Retorno
+                    </a>
+                {% elif consulta.retorno %}
+                    <span class="status-agendada">
+                        Consulta de Retorno
+                    </span>
+                {% else %}
+                    <span class="status-cancelada">
+                        Não disponível
+                    </span>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
 </table>
 
 {% endblock %}

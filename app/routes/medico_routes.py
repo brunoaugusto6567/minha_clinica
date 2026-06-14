@@ -2,6 +2,7 @@ from flask import Blueprint, render_template, request, redirect, url_for, flash
 from app import db
 from app.models.medico import Medico
 from app.models.consulta import Consulta
+from datetime import datetime
 
 medico = Blueprint(
     "medico",
@@ -9,12 +10,12 @@ medico = Blueprint(
     url_prefix="/medico"
 )
 
-# ==========================
-# LOGIN DO MÉDICO
-# ==========================
-
 MEDICO_LOGADO = None
 
+
+# ==========================
+# LOGIN
+# ==========================
 
 @medico.route("/login", methods=["GET", "POST"])
 def login():
@@ -48,7 +49,7 @@ def login():
 
 
 # ==========================
-# CADASTRO DO MÉDICO
+# CADASTRO
 # ==========================
 
 @medico.route("/cadastro", methods=["GET", "POST"])
@@ -92,7 +93,7 @@ def cadastro():
 
 
 # ==========================
-# DASHBOARD DO MÉDICO
+# DASHBOARD (SUBSTITUÍDA)
 # ==========================
 
 @medico.route("/dashboard")
@@ -101,25 +102,42 @@ def dashboard():
     global MEDICO_LOGADO
 
     if MEDICO_LOGADO is None:
+        return redirect(url_for("medico.login"))
 
-        return redirect(
-            url_for("medico.login")
-        )
-
+    # CORRIGIDO: Indentação ajustada aqui para alinhar com o escopo da função
     consultas = Consulta.query.filter(
         Consulta.status == "Agendada"
     ).order_by(
         Consulta.criado_em.desc()
     ).all()
 
+    retornos = Consulta.query.filter(
+        Consulta.status == "Pendente",
+        Consulta.retorno == True
+    ).order_by(
+        Consulta.criado_em.desc()
+    ).all()
+
+    print("=" * 50)
+    print("CONSULTAS NORMAIS:")
+    for c in consultas:
+        print(c.id, c.status, c.retorno)
+
+    print("\nRETORNOS:")
+    for r in retornos:
+        print(r.id, r.status, r.retorno)
+
+    print("=" * 50)
+
     return render_template(
         "medico/dashboard_medico.html",
-        consultas=consultas
+        consultas=consultas,
+        retornos=retornos
     )
 
 
 # ==========================
-# ATENDIMENTO DA CONSULTA
+# ATENDER CONSULTA
 # ==========================
 
 @medico.route("/consulta/<int:id>", methods=["GET", "POST"])
@@ -135,7 +153,6 @@ def editar_consulta(id):
 
     consulta = Consulta.query.get_or_404(id)
 
-    # CORREÇÃO AQUI: As linhas abaixo precisavam ser indentadas para dentro da função!
     if consulta.status != "Agendada":
 
         flash("Esta consulta já foi encerrada.")
@@ -216,3 +233,47 @@ def logout():
     return redirect(
         url_for("medico.login")
     )
+
+
+# ==========================
+# RETORNOS (AÇÕES)
+# ==========================
+
+@medico.route("/retorno/<int:id>/aceitar")
+def aceitar_retorno(id):
+
+    global MEDICO_LOGADO
+
+    if MEDICO_LOGADO is None:
+        return redirect(url_for("medico.login"))
+
+    consulta = Consulta.query.get_or_404(id)
+
+    consulta.status = "Agendada"
+
+    consulta.medico_id = MEDICO_LOGADO
+
+    db.session.commit()
+
+    flash("Retorno aceito com sucesso!")
+
+    return redirect(url_for("medico.dashboard"))
+
+
+@medico.route("/retorno/<int:id>/recusar")
+def recusar_retorno(id):
+
+    global MEDICO_LOGADO
+
+    if MEDICO_LOGADO is None:
+        return redirect(url_for("medico.login"))
+
+    consulta = Consulta.query.get_or_404(id)
+
+    db.session.delete(consulta)
+
+    db.session.commit()
+
+    flash("Retorno recusado.")
+
+    return redirect(url_for("medico.dashboard"))

@@ -1,0 +1,4 @@
+.clinica/
+__pycache__/
+*.pyc
+instance/
