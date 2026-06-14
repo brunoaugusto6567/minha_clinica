@@ -37,7 +37,7 @@ git clone https://github.com/brunoaugusto6567/minha_clinica.git
 
 ---
 
-## 2. Entrar no diretório do projeto
+## 2. Entrar na pasta do projeto
 
 ```bash
 cd minha_clinica
@@ -45,10 +45,20 @@ cd minha_clinica
 
 ---
 
-## 3. Trocar para a branch do projeto
+## 3. Escolher a versão desejada
+
+Para listar todas as versões (branches) disponíveis:
 
 ```bash
-git checkout -b 2.0 origin/2.0
+git branch -a
+```
+
+Depois, troque para a versão desejada.
+
+Exemplo utilizando a versão **2.2**:
+
+```bash
+git checkout 2.2
 ```
 
 ---
@@ -77,7 +87,7 @@ python -m venv .clinica
 pip install -r requirements.txt
 ```
 
-Caso ocorra erro relacionado ao módulo **cryptography**, execute:
+Caso ocorra erro relacionado ao pacote **cryptography**:
 
 ```bash
 pip install cryptography
@@ -226,20 +236,32 @@ medico@clinica.com
 * Agendamento de consultas
 * Cancelamento de consultas
 * Histórico de consultas
-* Solicitação de consulta de retorno
-* Download do atestado em PDF
+* Solicitação de consultas de retorno
+* Download de atestados em PDF
 
 ## Médico
 
 * Cadastro
 * Login
-* Dashboard
+* Dashboard administrativo
 * Atendimento das consultas
-* Registro do diagnóstico
+* Registro de diagnóstico
 * Prescrição de medicamentos
 * Solicitação de exames
-* Emissão de atestado médico
-* Finalização da consulta
+* Emissão de atestados médicos
+* Aprovação e recusa de consultas de retorno
+* Finalização de consultas
+
+---
+
+#  Novidades da versão 2.2
+
+* Correção completa das rotas de solicitação de retorno.
+* Aprovação e recusa de retornos diretamente pelo médico.
+* Novo fluxo de agendamento de retorno.
+* Melhorias no Dashboard do Médico.
+* Polimento geral do CSS e da interface.
+* Ajustes nas validações e correções de bugs.
 
 ---
 
